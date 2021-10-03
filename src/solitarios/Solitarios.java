@@ -1,21 +1,13 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package solitarios;
 
-/**
- *
- * @author Santi
- */
-public class Solitarios {
+import solitarios.Saltar.Saltar;
 
-    /**
-     * @param args the command line arguments
-     */
+public class Solitarios {
     public static void main(String[] args) {
-        // TODO code application logic here
+        Saltar salto = new Saltar();       
+        char[][] tablero = salto.crearTablero(11, 4);
+        salto.dibujarTablero(tablero);      
+        System.out.println(salto.fichasEnMismaFila(tablero, 7));
     }
     
 }
