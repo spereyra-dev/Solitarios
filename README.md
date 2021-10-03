@@ -1,0 +1,2 @@
+# Solitarios
+Parcial de programación.
