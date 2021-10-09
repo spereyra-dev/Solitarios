@@ -1,11 +1,7 @@
-package solitarios.Saltar;
+package solitarios.Juegos;
 
 public class Saltar {
-
-    private Jugador j1;
-    private Jugador j2;
-    private Jugador j3;
-    private Jugador j4;
+    
     private char[][] matrizJuego;
 
     //primeras 6 filas sin puntuacion
@@ -13,10 +9,6 @@ public class Saltar {
     //funcion para saber fichas en la misma fila
     //misma fila no puede haber colores iguales en el area base (primeras 6 filas)
     public Saltar() {
-        this.j1 = new Jugador();
-        this.j2 = new Jugador();
-        this.j3 = new Jugador();
-        this.j4 = new Jugador();
         this.matrizJuego = crearTablero(11, 4);
     }
 
