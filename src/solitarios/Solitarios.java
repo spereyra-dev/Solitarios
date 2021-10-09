@@ -9,35 +9,35 @@ public class Solitarios {
     public static void main(String[] args) throws Exception {
         Sistema sistema = new Sistema();
         Scanner in = new Scanner(System.in);
-        int opcion;
-        menu();
-        
-        opcion = in.nextInt();
-        switch(opcion){
-            case 1:
-                registrar(sistema);
-                menu();
-            break;
-            case 2:  
-                clearScreen();              
-                System.out.println("*******JUGAR SALTAR*********");
-                System.out.println("*******JUGAR SALTAR*********");
-            break;
-            case 3:
-                clearScreen();              
-                System.out.println("*******JUGAR RECTÁNGULO*********");
-                System.out.println("*******JUGAR RECTÁNGULO*********");
-            break;
-            case 4:
-                clearScreen();              
-                System.out.println("*******BITÁCORA*********");
-                System.out.println("*******BITÁCORA*********");
-            break;
-            case 5:
-                clearScreen();
-            break;
-            default:
-            break;
+        int opcion = 0;
+        while(opcion != 5){
+            menu();
+            opcion = in.nextInt();
+            switch(opcion){
+                case 1:
+                    registrar(sistema);
+                break;
+                case 2:  
+                    clearScreen();              
+                    System.out.println("*******JUGAR SALTAR*********");
+                    System.out.println("*******JUGAR SALTAR*********");
+                break;
+                case 3:
+                    clearScreen();              
+                    System.out.println("*******JUGAR RECTÁNGULO*********");
+                    System.out.println("*******JUGAR RECTÁNGULO*********");
+                break;
+                case 4:
+                    clearScreen();              
+                    System.out.println("*******BITÁCORA*********");
+                    System.out.println("*******BITÁCORA*********");
+                break;
+                case 5:
+                    clearScreen();
+                break;
+                default:
+                break;
+            }
         }
     }
     public static void menu(){
@@ -63,7 +63,6 @@ public class Solitarios {
             if(sistema.getJugadores().size() < 4){
                 String opcion = "";
                 System.out.println("Escriba su nombre: ");
-                in.nextLine();
                 nombre = in.nextLine();
                 System.out.println("Escriba su alias: ");
                 alias = in.nextLine();
@@ -81,17 +80,21 @@ public class Solitarios {
                 if(!opcion.equalsIgnoreCase("S")){
                     quiereRegistrar = false;
                 }
+                System.out.println("*******REGISTRAR JUGADOR*********");
             } else {
-                System.out.println("Solo se puede ingresar hasta 4 Jugadores. Presione cualquier tecla para continuar");  
+                System.out.println("Solo se puede ingresar hasta 4 Jugadores. Presione cualquier tecla para continuar");
+                System.out.println("*******REGISTRAR JUGADOR*********");
+                quiereRegistrar = false;
                 in.nextLine();
             }
             
-            System.out.println("*******REGISTRAR JUGADOR*********");
+            clearScreen();
         }
     }
     public static void clearScreen() {  
-        System.out.print("\033[H\033[2J");  
-        System.out.flush(); 
+        for (int i = 0; i < 100; i++) {
+            System.out.println();
+        }
     }
     
 }
