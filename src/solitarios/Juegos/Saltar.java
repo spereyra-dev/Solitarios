@@ -1,12 +1,10 @@
 package solitarios.Juegos;
 
-public class Saltar {
+public class Saltar extends Juego{
     
     private char[][] matrizJuego;
-
+    //Jugadores
     //primeras 6 filas sin puntuacion
-    //el dibujo es de 23x9
-    //funcion para saber fichas en la misma fila
     //misma fila no puede haber colores iguales en el area base (primeras 6 filas)
     public Saltar() {
         this.matrizJuego = crearTablero(11, 4);
@@ -88,6 +86,17 @@ public class Saltar {
             }
             System.out.println();
         }
+    }
+
+    /*
+        Devuelve verdadero si el juego no terminó
+    */
+    @Override
+    public boolean jugar() {
+        boolean siguenJugando = true;
+        
+        
+        return siguenJugando;
     }
 
 }

@@ -2,6 +2,7 @@ package sistema;
 
 import java.util.ArrayList;
 import java.util.List;
+import solitarios.Juegos.Juego;
 import solitarios.Juegos.Rectangulo;
 import solitarios.Juegos.Saltar;
 
@@ -12,15 +13,12 @@ public class Sistema {
     
     private List<Jugador> jugadores;
     private Bitacora bitacora;
-    private Saltar saltar;
-    private Rectangulo rectangulo;
+    private Juego juego;
 
     
     public Sistema() {
         this.jugadores = new ArrayList<>();
         this.bitacora = new Bitacora();
-        this.saltar = new Saltar();
-        this.rectangulo = new Rectangulo();
     }
 
     public List<Jugador> getJugadores() {
@@ -39,25 +37,18 @@ public class Sistema {
         this.bitacora = bitacora;
     }
 
-    public Saltar getSaltar() {
-        return saltar;
+    public Juego getJuego() {
+        return juego;
     }
-
-    public void setSaltar(Saltar saltar) {
-        this.saltar = saltar;
-    }
-
-    public Rectangulo getRectangulo() {
-        return rectangulo;
-    }
-
-    public void setRectangulo(Rectangulo rectangulo) {
-        this.rectangulo = rectangulo;
-    }
+    
     
     public void registrarJugador(Jugador j) throws Exception{
         if(!existeJugador(j)){
-            jugadores.add(j);
+            if(j.getEdad() > 4 && j.getEdad() < 110){
+                jugadores.add(j);
+            } else {
+                throw new Exception("Se permite como edad del jugador desde 4 a 110. Operación cancelada.");            
+            }
         } else {
             throw new Exception("El jugador ya existe. Operación cancelada.");
         }
@@ -72,8 +63,17 @@ public class Sistema {
         }
         return bandera;
     }
-    
-    public void elegirJuego(){
-        
+    //TODO: instanciar juego segun si es saltar o rectangulo
+    public void elegirJuego(String nombreJuego){
+        switch(nombreJuego){
+            case "SALTAR":
+                this.juego = new Saltar();
+            break;
+            case "RECTANGULO":
+                this.juego = new Saltar();
+            break;
+            default:
+            break;
+        }
     }
 }

@@ -3,6 +3,7 @@ package solitarios;
 import java.util.Scanner;
 import sistema.Jugador;
 import sistema.Sistema;
+import solitarios.Juegos.Juego;
 import solitarios.Juegos.Saltar;
 
 public class Solitarios {
@@ -18,18 +19,15 @@ public class Solitarios {
                     registrar(sistema);
                 break;
                 case 2:  
-                    clearScreen();              
-                    System.out.println("*******JUGAR SALTAR*********");
-                    System.out.println("*******JUGAR SALTAR*********");
+                    jugar(sistema,"SALTAR");
                 break;
                 case 3:
-                    clearScreen();              
-                    System.out.println("*******JUGAR RECTÁNGULO*********");
-                    System.out.println("*******JUGAR RECTÁNGULO*********");
+                    jugar(sistema,"SALTAR");
                 break;
                 case 4:
                     clearScreen();              
                     System.out.println("*******BITÁCORA*********");
+                    System.out.println("*******EN CONSTRUCCION*********");
                     System.out.println("*******BITÁCORA*********");
                 break;
                 case 5:
@@ -96,5 +94,14 @@ public class Solitarios {
             System.out.println();
         }
     }
-    
+
+    private static void jugar(Sistema sistema, String juegoStr) {
+        sistema.elegirJuego(juegoStr);
+        Juego j = sistema.getJuego();
+        while(j.jugar()){
+            System.out.println("*******JUGAR " + juegoStr + "*********");
+            
+            System.out.println("*******JUGAR " + juegoStr + "*********");
+        }
+    }
 }
