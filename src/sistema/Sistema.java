@@ -78,4 +78,8 @@ public class Sistema {
             break;
         }
     }
+
+    public boolean validarCantidadJugadores() {
+        return getJugadores().size() < 4;
+    }
 }

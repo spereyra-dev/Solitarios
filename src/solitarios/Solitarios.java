@@ -59,7 +59,7 @@ public class Solitarios {
         while(quiereRegistrar){
             System.out.println("*******REGISTRAR JUGADOR*********");
             
-            if(sistema.getJugadores().size() < 4){
+            if(sistema.validarCantidadJugadores()){
                 String opcion = "";
                 
                 //Solicito nombre del jugador
