@@ -1,5 +1,6 @@
 package solitarios;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 import sistema.Jugador;
 import sistema.Sistema;
@@ -48,39 +49,75 @@ public class Solitarios {
         System.out.println("5-Fin");
         System.out.println("*******MENU*********");
     }
-    public static void registrar(Sistema sistema) throws Exception{
+    public static void registrar(Sistema sistema) {
         clearScreen();
         boolean quiereRegistrar = true;
-        String nombre;
-        String alias;
-        int edad;        
+        String nombre = "";
+        String alias = "";
+        int edad = 0;        
         Scanner in = new Scanner(System.in);
         while(quiereRegistrar){
             System.out.println("*******REGISTRAR JUGADOR*********");
             
             if(sistema.getJugadores().size() < 4){
                 String opcion = "";
+                
+                //Solicito nombre del jugador
                 System.out.println("Escriba su nombre: ");
                 nombre = in.nextLine();
+                while(nombre.isBlank()){
+                    System.out.println("Debe escribir su nombre: ");
+                    nombre = in.nextLine();                    
+                }
+                
+                //Solicito alias del jugador
                 System.out.println("Escriba su alias: ");
                 alias = in.nextLine();
+                while(alias.isBlank() || sistema.existeAlias(alias)){
+                    if(alias.isBlank()){
+                        System.out.println("Debe escribir su alias: ");
+                    }
+                    if(sistema.existeAlias(alias)){
+                        System.out.println("Otro jugador ya tiene ese alias. Por favor, ingrese otro alias: ");
+                    }                    
+                    alias = in.nextLine();                    
+                }
+                
+                //Solicito edad del jugador
                 System.out.println("Escriba su edad: ");
-                edad = in.nextInt();
-                in.nextLine();
-                try{
-                    Jugador j = new Jugador(nombre,alias,edad);
-                    sistema.registrarJugador(j);
-                } catch (Exception ex){
-                    System.out.print(ex.getMessage());
-                } 
+                boolean correcto = false; 
+                while (!correcto){ 
+                    try{
+                        edad = Integer.parseInt(in.nextLine());
+                        if(sistema.validarEdad(edad)){
+                            correcto = true;
+                        } else {
+                            System.out.println("La  edad debe ser entre 0 y 99. Intente nuevamente: ");
+                            correcto = false;  
+                        }
+                    } 
+                    catch(NumberFormatException e){ 
+                        System.out.println("Debe ingresar un número. Por favor, intente nuevamente.");
+                    } 
+                }
+                               
+                Jugador j = new Jugador(nombre,alias,edad);
+                sistema.registrarJugador(j);
+                
+                System.out.println("El jugador ha sido creado exitosamente! Pulse una tecla para continuar ..");                
+                in.nextLine(); 
+                
                 System.out.println("Si desea continuar continuar ingresando jugadores presione 'S' de lo contrario, presione cualquier tecla: ");
+                System.out.println();
+                System.out.println("*******REGISTRAR JUGADOR*********");
                 opcion = in.nextLine();
                 if(!opcion.equalsIgnoreCase("S")){
                     quiereRegistrar = false;
                 }
-                System.out.println("*******REGISTRAR JUGADOR*********");
             } else {
-                System.out.println("Solo se puede ingresar hasta 4 Jugadores. Presione cualquier tecla para continuar");
+                System.out.println();
+                System.out.println("Ya se ha alcanzado el máximo de jugadores (4). Presione cualquier tecla para continuar .. ");
+                System.out.println();
                 System.out.println("*******REGISTRAR JUGADOR*********");
                 quiereRegistrar = false;
                 in.nextLine();

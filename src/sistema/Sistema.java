@@ -42,27 +42,29 @@ public class Sistema {
     }
     
     
-    public void registrarJugador(Jugador j) throws Exception{
-        if(!existeJugador(j)){
-            if(j.getEdad() > 4 && j.getEdad() < 110){
-                jugadores.add(j);
-            } else {
-                throw new Exception("Se permite como edad del jugador desde 4 a 110. Operación cancelada.");            
-            }
-        } else {
-            throw new Exception("El jugador ya existe. Operación cancelada.");
-        }
+    public void registrarJugador(Jugador j){
+        jugadores.add(j);
     }
-    private boolean existeJugador(Jugador j){
+    public boolean existeAlias(String alias){
         boolean bandera = false;
         
         for(Jugador jugador : jugadores){
-            if(jugador.equals(j)){
+            if(jugador.equals(alias)){
                 bandera = true;
             }
         }
         return bandera;
     }
+    public boolean validarEdad(int edad){
+        boolean esValida = false;
+        if(edad > 0 && edad < 100){
+            esValida = true;
+        }
+        
+        return esValida;
+    }
+    
+    
     //TODO: instanciar juego segun si es saltar o rectangulo
     public void elegirJuego(String nombreJuego){
         switch(nombreJuego){

@@ -41,6 +41,9 @@ public class Jugador {
     public void setEdad(int edad) {
         this.edad = edad;
     }
-    
-    
+
+    @Override
+    public boolean equals(Object obj) {
+        return this.getAlias().equals((String)obj);
+    }
 }
