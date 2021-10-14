@@ -7,14 +7,15 @@ import solitarios.Juegos.Rectangulo;
 import solitarios.Juegos.Saltar;
 
 public class Sistema {
-    //Registrar jugadores -Listo
-    //Elegir juego
-    //Tener una bitacora - Mostrar lista
+    //TODO: Tener una bitacora - Mostrar lista
+    //TODO: En todos los casos debe validarse la jugada y si es incorrecta, solicitar el reingreso. (No tengo claro si validarJugada va en sistema o va en cada juego)
+    //TODO: El sistema debe verificar la condición de terminación del respectivo juego e informarla. También, si se ingresa "X" termina 
+    //TODO: el juego en el momento y se considera el puntaje logrado hasta ahí para la bitácora. 
     
     private List<Jugador> jugadores;
     private Bitacora bitacora;
     private Juego juego;
-
+    
     
     public Sistema() {
         this.jugadores = new ArrayList<>();
@@ -33,10 +34,6 @@ public class Sistema {
         return bitacora;
     }
 
-    public void setBitacora(Bitacora bitacora) {
-        this.bitacora = bitacora;
-    }
-
     public Juego getJuego() {
         return juego;
     }
@@ -45,6 +42,7 @@ public class Sistema {
     public void registrarJugador(Jugador j){
         jugadores.add(j);
     }
+    
     public boolean existeAlias(String alias){
         boolean bandera = false;
         
@@ -55,6 +53,7 @@ public class Sistema {
         }
         return bandera;
     }
+    
     public boolean validarEdad(int edad){
         boolean esValida = false;
         if(edad > 0 && edad < 100){
@@ -64,22 +63,16 @@ public class Sistema {
         return esValida;
     }
     
-    
-    //TODO: instanciar juego segun si es saltar o rectangulo
-    public void elegirJuego(String nombreJuego){
-        switch(nombreJuego){
-            case "SALTAR":
-                this.juego = new Saltar();
+    public void elegirJuego(int juego,int configuracion, Jugador jugador){
+        switch(juego){
+            case 2:
+                this.juego = new Saltar(configuracion,jugador);
             break;
-            case "RECTANGULO":
-                this.juego = new Saltar();
+            case 3:
+                this.juego = new Rectangulo(configuracion,jugador);
             break;
             default:
             break;
         }
-    }
-
-    public boolean validarCantidadJugadores() {
-        return getJugadores().size() < 4;
-    }
+    }    
 }

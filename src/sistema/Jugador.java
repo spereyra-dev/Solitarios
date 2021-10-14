@@ -5,17 +5,11 @@ public class Jugador {
     private String nombre;
     private String alias;
     private int edad;
-    private int [][] fichas;
     
-    //compare
-    //unicidad del alias
-    //Identificar que fichas es de cada jugador
-
     public Jugador(String nombre, String alias, int edad) {
         this.nombre = nombre;
         this.alias = alias;
         this.edad = edad;
-        this.fichas = new int[400][2];
     }
 
     public String getNombre() {

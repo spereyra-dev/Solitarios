@@ -1,15 +1,54 @@
 package solitarios.Juegos;
 
+import sistema.Jugador;
+
 public class Saltar extends Juego{
+    //TODO:Validar reglas de fin de juego
+    //TODO:Validar jugada
     
-    private char[][] matrizJuego;
-    //Jugadores
+    private String[][] matrizJuego;
     //primeras 6 filas sin puntuacion
     //misma fila no puede haber colores iguales en el area base (primeras 6 filas)
-    public Saltar() {
-        this.matrizJuego = crearTablero(11, 4);
+    public Saltar(int configuracion, Jugador jugador) {
+        super(configuracion,jugador);
+        crearTablero();
     }
 
+    //¿te parece una buena solucion para mostrar la matriz con los colores? En memoria guardarla con las letras pero cuando la mostramos, que sean los # con los colores. 
+    //Nos va a facilitar para las validaciones. Cuando veas este mensaje avisame y te comento bien la idea.
+    public String[][] getMatrizJuego() {
+        String[][] s = this.matrizJuego;
+        for (int i = 0; i < s.length; i++) {
+            for (int j = 0; j < s[i].length; j++) {
+                if (!s[i][j].equals(' ')) {
+                    s[i][j] = this.setColor(s[i][j]);
+                } 
+            }
+        }
+        return s;
+    }
+    private void setMatrizJuego(){
+    }
+    
+    public void crearTablero() {
+        String[][] s = new String[11][4];        
+        //TODO:Configuración predeterminada(No modifiqué nada)
+        if(this.getConfiguracion() == 1){
+            for (int i = 0; i < s.length; i++) {
+                for (int j = 0; j < s[i].length; j++) {
+                    if (i >= 7) {
+                        s[i][j] = "#";
+                    } else {
+                        s[i][j] = " ";
+                    }
+                }
+            }
+        //TODO:Configuracion aleatoria
+        } else if (this.getConfiguracion() == 2){
+        }
+        
+        this.matrizJuego = s;
+    }
     public int fichasEnMismaFila(char[][] matrizJuego, int posicion) {
         int cantidad = 0;
         for (int i = 0; i < matrizJuego[posicion].length; i++) {
@@ -19,7 +58,7 @@ public class Saltar extends Juego{
         }
         return cantidad;
     }        
-    
+    //TODO: tratar de quitar todas las excepciones de las clases. Que eso se maneje desde la vista.
     public void saltar (char[][] matrizJuego,int posicionX, int posicionY) throws Exception{
         int fichasASaltar = fichasEnMismaFila(matrizJuego,posicionX);
         if (matrizJuego[posicionX][posicionY+fichasASaltar] == '#'){
@@ -30,62 +69,6 @@ public class Saltar extends Juego{
         }else{
             throw new RuntimeException("El espacio a saltar no está disponible");
         }        
-    }
-
-    public char[][] crearTablero(int filas, int columnas) {
-        char[][] s = new char[filas][columnas];
-        for (int i = 0; i < s.length; i++) {
-            for (int j = 0; j < s[i].length; j++) {
-                if (i >= 7) {
-                    s[i][j] = '#';
-                } else {
-                    s[i][j] = ' ';
-                }
-            }
-        }
-        return s;
-    }
-
-    public void dibujarTablero(char[][] matrizJuego) {
-        for (int i = 0; i < matrizJuego.length; i++) {
-            System.out.println("    +-+-+-+-+");
-            switch (i) {
-                case 0:
-                    System.out.print("60  ");
-                    break;
-                case 1:
-                    System.out.print("40  ");
-                    break;
-                case 2:
-                    System.out.print("30  ");
-                    break;
-                case 3:
-                    System.out.print("20  ");
-                    break;
-                case 4:
-                    System.out.print("10  ");
-                    break;
-                default:
-                    System.out.print("    ");
-                    break;
-            }
-            for (int j = 0; j < matrizJuego[i].length; j++) {
-
-                System.out.print("|");
-                //#
-                System.out.print(matrizJuego[i][j]);
-
-                if (j == matrizJuego[i].length - 1) {
-                    System.out.print("|");
-                }
-            }
-            if (i == matrizJuego.length - 1) {
-                System.out.println();
-                System.out.println("    +-+-+-+-+");
-                System.out.print("     1 2 3 4");
-            }
-            System.out.println();
-        }
     }
 
     /*

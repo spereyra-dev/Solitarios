@@ -10,21 +10,84 @@ public abstract class Juego {
     private final String ANSI_YELLOW = "\u001B[33m";
     private final String ANSI_BLUE = "\u001B[34m";
     private int configuracion;
-    //private HashMap<Jugador,int> puntajeJugadores;
+    private Jugador jugador;
+    private int turno;
+
+    public Juego(int configuracion, Jugador jugador) {
+        this.configuracion = configuracion;
+        this.jugador = jugador;
+    }
+
+    public String getANSI_RESET() {
+        return ANSI_RESET;
+    }
+
+    public String getANSI_RED() {
+        return ANSI_RED;
+    }
+
+    public String getANSI_GREEN() {
+        return ANSI_GREEN;
+    }
+
+    public String getANSI_YELLOW() {
+        return ANSI_YELLOW;
+    }
+
+    public String getANSI_BLUE() {
+        return ANSI_BLUE;
+    }
+
+    public int getConfiguracion() {
+        return configuracion;
+    }
+
+    public Jugador getJugador() {
+        return jugador;
+    }    
     
-    //Cuando se le asigna el color al jugador?
-    //Que significa al azar o predeterminada?
-    /*    
-        Se indica el jugador eligiéndolo de la lista y la configuración al azar o predeterminada. Se juega (ver 
-detalle más abajo). 
-        En todos los casos debe validarse la jugada y si es incorrecta, solicitar el reingreso. 
-        El sistema debe verificar la condición de terminación del respectivo juego e informarla. También, si se ingresa "X" termina 
-        el juego en el momento y se considera el puntaje logrado hasta ahí para la bitácora. 
-    
-    public abstract void asignarConfiguracion();
-    public abstract boolean validarJugada();
-    public abstract void registrarEnBitacora();
-    */
     public abstract boolean jugar();
-      
+        
+    //TODO:Falta testear
+    public String siguienteColor(){
+        String color = "";
+        switch(this.turno%4){
+            case 0:
+                color = "R";
+            break;
+            case 1:
+                color = "A";
+            break;
+            case 2:
+                color = "V";
+            break;
+            case 3:
+                color = "M";
+            break;
+            default:
+            break;
+        }
+        this.turno++;        
+        return color;
+    }
+    public String setColor(String color){
+        String hashtagConColor = "";
+        switch(color){
+            case "R":
+                hashtagConColor = this.ANSI_RED + "#" + this.ANSI_RESET;
+            break;
+            case "A":
+                hashtagConColor = this.ANSI_BLUE + "#" + this.ANSI_RESET;
+            break;
+            case "V":
+                hashtagConColor = this.ANSI_GREEN + "#" + this.ANSI_RESET;
+            break;
+            case "M":
+                hashtagConColor = this.ANSI_YELLOW + "#" + this.ANSI_RESET;
+            break;
+            default:
+            break;
+        }
+        return hashtagConColor;
+    }
 }
