@@ -81,5 +81,16 @@ public class Saltar extends Juego{
         
         return siguenJugando;
     }
-
+    //Reglas de puntaje
+    public int getPuntaje(){
+        int puntaje = 0;
+        return puntaje;
+    }
+    
+    //Reglas para validar jugada
+    public boolean validarJugada(){
+        boolean esValida = false;
+        
+        return esValida;
+    }
 }
