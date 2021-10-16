@@ -198,14 +198,14 @@ public class Solitarios {
     private static Jugador elegirJugador(Sistema sistema){
         Scanner in = new Scanner(System.in);
         List<Jugador> jugadores = sistema.getJugadores();
-        Jugador j = jugadores.get(0);
+        Jugador jugadorElegido = jugadores.get(0);
         int i = 0;
         int jugadorId = -1;
         System.out.println("*******ELEGIR JUGADOR*********");
         System.out.println();
         for (Jugador jugador : jugadores) {
             i++;
-            System.out.println(i + " - " + jugador.getNombre() );
+            System.out.println(i + " - " + jugador.getNombre() + " (" + jugador.getAlias() + ")." );
         }
         System.out.println();
         System.out.println("Seleccione un jugador apretando el número que tiene en la lista y luego enter.");
@@ -215,14 +215,14 @@ public class Solitarios {
         while(!jugadorValidado){
             jugadorId = leerEntero() - 1;
             try {            
-                j = jugadores.get(jugadorId);
+                jugadorElegido = jugadores.get(jugadorId);
                 jugadorValidado = true;
-                System.out.println("Se ha seleccionado al jugador: " + j.getNombre() + " (" + j.getAlias() + ").");
+                System.out.println("Se ha seleccionado al jugador: " + jugadorElegido.getNombre() + " (" + jugadorElegido.getAlias() + ").");
             } catch (IndexOutOfBoundsException e) {
                 System.out.println("Debe ingresar un número de la lista. Por favor, intente nuevamente.");
             }
         }
-        return j;    
+        return jugadorElegido;    
     }
     
     private static int elegirConfiguracion(Sistema sistema){
