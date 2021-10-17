@@ -1,5 +1,6 @@
 /build/
 /nbproject/
+/dist/
 /.idea/ant.xml
 /out/production/Solitarios/sistema/Bitacora.class
 /out/production/Solitarios/solitarios/Juegos/Juego.class

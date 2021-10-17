@@ -30,6 +30,8 @@ public class Saltar extends Juego {
         }
         return s;
     }
+    private void setMatrizJuego(){
+    }
 
     public void crearTablero() {
         String[][] s = new String[11][4];
@@ -153,15 +155,11 @@ public class Saltar extends Juego {
         Devuelve verdadero si el juego no terminó
     */
     @Override
-    public boolean jugar() {
-        boolean siguenJugando = true;
+    public void jugar() {
 
-
-        return siguenJugando;
     }
-
-    //Reglas de puntaje
-    public int getPuntaje() {
+    //Reglas del puntaje
+    public int getPuntaje(){
         int puntaje = 0;
         return puntaje;
     }
@@ -171,5 +169,20 @@ public class Saltar extends Juego {
         boolean esValida = false;
 
         return esValida;
+    }
+
+    @Override
+    public boolean finJuego(String args) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public int validarJugada(String argsStr) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean validarArgumentosJugada(String argsStr) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }
