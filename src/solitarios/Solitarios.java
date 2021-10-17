@@ -1,19 +1,17 @@
 package solitarios;
 
-import java.util.InputMismatchException;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Scanner;
 import sistema.Jugador;
 import sistema.Sistema;
 import solitarios.Juegos.Juego;
 import solitarios.Juegos.Saltar;
+import java.util.List;
+import java.util.Objects;
+import java.util.Scanner;
 
 public class Solitarios {  
     
     public static void main(String[] args) throws Exception {
         Sistema sistema = new Sistema();
-        
         /*
         REGION TEST:
         ***Borrar antes de la entrega***
@@ -143,8 +141,7 @@ public class Solitarios {
 
     private static void jugarSaltar(Sistema sistema) {
         //TODO: Solicitar jugada
-        //TODO: Corregir la matriz para que quede linda
-        
+        Juego juegoS = ((Saltar)sistema.getJuego());
         String [][] matrizJuego = ((Saltar)sistema.getJuego()).getMatrizJuego();
         
         System.out.println("*******  SALTAR  *********");
@@ -174,7 +171,8 @@ public class Solitarios {
 
                 System.out.print("|");
                 //#
-                System.out.print(matrizJuego[i][j]);
+                String letra = Objects.equals(matrizJuego[i][j], "") ? matrizJuego[i][j] = " " : matrizJuego[i][j];
+                System.out.print(letra);
 
                 if (j == matrizJuego[i].length - 1) {
                     System.out.print("|");
@@ -187,7 +185,9 @@ public class Solitarios {
             }
             System.out.println();
         }
-        
+
+        System.out.println("Inicia el juego, el primer color en mover será "+juegoS.siguienteColor());
+
         System.out.println("*******  SALTAR  *********");
     } 
     private static void jugarRectangulo(Sistema sistema) {

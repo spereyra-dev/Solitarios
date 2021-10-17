@@ -16,6 +16,7 @@ public abstract class Juego {
     public Juego(int configuracion, Jugador jugador) {
         this.configuracion = configuracion;
         this.jugador = jugador;
+        this.turno = 0;
     }
 
     public String getANSI_RESET() {
@@ -51,7 +52,7 @@ public abstract class Juego {
     //TODO:Falta testear
     public String siguienteColor(){
         String color = "";
-        switch(this.turno%4){
+        switch(this.turno){
             case 0:
                 color = "R";
             break;
@@ -65,6 +66,8 @@ public abstract class Juego {
                 color = "M";
             break;
             default:
+                color = "R";
+                this.turno=0;
             break;
         }
         this.turno++;        
@@ -89,5 +92,9 @@ public abstract class Juego {
             break;
         }
         return hashtagConColor;
+    }
+    //Comprueba si una posición en una matriz es una ficha
+    public boolean validarEsFicha(String[][] matriz,int x,int y){
+        return (matriz[x][y] != null) && (matriz[x][y].contains("R") || matriz[x][y].contains("V") || matriz[x][y].contains("A") || matriz[x][y].contains("M"));
     }
 }
