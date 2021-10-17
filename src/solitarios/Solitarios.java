@@ -7,6 +7,7 @@ import java.util.Scanner;
 import sistema.Jugador;
 import sistema.Sistema;
 import solitarios.Juegos.Juego;
+import solitarios.Juegos.Rectangulo;
 import solitarios.Juegos.Saltar;
 
 public class Solitarios {  
@@ -22,6 +23,8 @@ public class Solitarios {
         Jugador j2 = new Jugador("Santiago","San",21);
         sistema.registrarJugador(j1);
         sistema.registrarJugador(j2);
+        sistema.elegirJuego(3,2,j1);
+        
         /*
         END REGION TEST:        
         */
@@ -45,7 +48,11 @@ public class Solitarios {
                         int configuracion = elegirConfiguracion(sistema);
                         clearScreen();
                         sistema.elegirJuego(opcion,configuracion,jugador);
-                        jugarSaltar(sistema);
+                        if(opcion == 2){
+                            jugarSaltar(sistema);
+                        } else if (opcion == 3){
+                            jugarRectangulo(sistema);
+                        }
                     } else {
                         System.out.println("Para poder jugar debe ingresar un jugador primero! Presione cualquier tecla para volver al menú .. ");
                         in.nextLine();
@@ -140,59 +147,50 @@ public class Solitarios {
             System.out.println();
         }
     }
-
+    private static void jugar(Sistema sistema){
+    
+    }
     private static void jugarSaltar(Sistema sistema) {
         //TODO: Solicitar jugada
         //TODO: Corregir la matriz para que quede linda
-        
-        String [][] matrizJuego = ((Saltar)sistema.getJuego()).getMatrizJuego();
-        
-        System.out.println("*******  SALTAR  *********");
-        for (int i = 0; i < matrizJuego.length; i++) {
-            System.out.println("    +-+-+-+-+");
-            switch (i) {
-                case 0:
-                    System.out.print("60  ");
-                    break;
-                case 1:
-                    System.out.print("40  ");
-                    break;
-                case 2:
-                    System.out.print("30  ");
-                    break;
-                case 3:
-                    System.out.print("20  ");
-                    break;
-                case 4:
-                    System.out.print("10  ");
-                    break;
-                default:
-                    System.out.print("    ");
-                    break;
-            }
-            for (int j = 0; j < matrizJuego[i].length; j++) {
-
-                System.out.print("|");
-                //#
-                System.out.print(matrizJuego[i][j]);
-
-                if (j == matrizJuego[i].length - 1) {
-                    System.out.print("|");
-                }
-            }
-            if (i == matrizJuego.length - 1) {
-                System.out.println();
-                System.out.println("    +-+-+-+-+");
-                System.out.print("     1 2 3 4");
-            }
-            System.out.println();
-        }
-        
-        System.out.println("*******  SALTAR  *********");
     } 
     private static void jugarRectangulo(Sistema sistema) {
-        System.out.println("*******  RECTANGULO  *********");
-        System.out.println("*******  RECTANGULO  *********");        
+        Scanner in = new Scanner(System.in);
+        String args = "";
+        Juego juego = (Rectangulo)sistema.getJuego();
+        while(!juego.finJuego(args)){
+            int validarJugada = -1;
+            while(validarJugada != 0){
+                clearScreen();
+                dibujarTablero(sistema);
+                System.out.println("Ingrese Jugada:");
+                args = in.nextLine();
+                if(juego.validarArgumentosJugada(args)){
+                    validarJugada = juego.validarJugada(args);
+                    if(validarJugada == 1){
+                        System.out.println("El rectángulo elegido pisa algún tope.");
+                        in.nextLine();
+                    }
+                    if(validarJugada == 2){
+                        System.out.println("El rectángulo elegido pisa algún otro rectángulo.");
+                        in.nextLine();
+                    }
+                    if(validarJugada == 3){
+                        sistema.getJuego().colorAnterior();
+                        System.out.println("El rectángulo elegido no es adyacente al anterior. (Jugada anterior color: " + sistema.getJuego().colorAnterior() + ")");
+                        in.nextLine();
+                    }
+                } else {
+                    System.out.println("La jugada debe ser 4 números del 1-20.");
+                    System.out.println("El primero indíca la posición \"x\" de inicio.");
+                    System.out.println("El segundo indíca la posición \"y\" de inicio. ");
+                    System.out.println("El tercero indíca la cantidad de filas.");
+                    System.out.println("El cuarto indíca la cantidad de columnas.");
+                    System.out.println("La suma de la \"x\" y las filas o la \"y\" y las columnas no debe superar el máximo del tablero.");
+                    in.nextLine();
+                }
+            }
+        }
     }
     
     private static Jugador elegirJugador(Sistema sistema){
@@ -261,4 +259,80 @@ public class Solitarios {
         }
         return entero;
     }
+
+    private static void dibujarTablero(Sistema sistema) {
+        Scanner in = new Scanner(System.in);
+        String [][] matrizJuego;
+        if(sistema.getJuego().getClass() == Saltar.class){
+            matrizJuego = ((Saltar)sistema.getJuego()).getMatrizJuego();
+
+            System.out.println("*******  SALTAR  *********");
+            for (int i = 0; i < matrizJuego.length; i++) {
+                System.out.println("    +-+-+-+-+");
+                switch (i) {
+                    case 0:
+                        System.out.print("60  ");
+                        break;
+                    case 1:
+                        System.out.print("40  ");
+                        break;
+                    case 2:
+                        System.out.print("30  ");
+                        break;
+                    case 3:
+                        System.out.print("20  ");
+                        break;
+                    case 4:
+                        System.out.print("10  ");
+                        break;
+                    default:
+                        System.out.print("    ");
+                        break;
+                }
+                for (int j = 0; j < matrizJuego[i].length; j++) {
+
+                    System.out.print("|");
+                    //#
+                    System.out.print(matrizJuego[i][j]);
+
+                    if (j == matrizJuego[i].length - 1) {
+                        System.out.print("|");
+                    }
+                }
+                if (i == matrizJuego.length - 1) {
+                    System.out.println();
+                    System.out.println("    +-+-+-+-+");
+                    System.out.print("     1 2 3 4");
+                }
+                System.out.println();
+            }
+
+            System.out.println("*******  SALTAR  *********");
+            
+        } else if (sistema.getJuego().getClass() == Rectangulo.class){
+            System.out.println("*******  RECTANGULO  *********");
+            matrizJuego = ((Rectangulo)sistema.getJuego()).getMatrizJuego();
+            System.out.println("     1 2 3 4 5 6 7 8 9 1 1 1 1 1 1 1 1 1 1 2");
+            System.out.println("                       0 1 2 3 4 5 6 7 8 9 0");
+            for (int i = 0; i < matrizJuego.length; i++) {
+                if(i<10){
+                    System.out.print("0" + i + "  ");
+                }else{
+                    System.out.print(i + "  ");
+                }
+
+                for (int j = 0; j < matrizJuego[0].length; j++) {
+                    System.out.print(" " + matrizJuego[i][j]);
+                }
+                    System.out.println();
+
+            }
+            System.out.println("Juega " + sistema.getJuego().getColorJugadaActual());
+            System.out.println("*******  RECTANGULO  *********");
+        } else {
+            System.out.println("*******  No existe ese juego  *********");        
+        }
+        
+    }
+    
 }

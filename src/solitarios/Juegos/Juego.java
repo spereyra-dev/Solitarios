@@ -12,10 +12,13 @@ public abstract class Juego {
     private int configuracion;
     private Jugador jugador;
     private int turno;
+    private int puntaje;
 
     public Juego(int configuracion, Jugador jugador) {
         this.configuracion = configuracion;
         this.jugador = jugador;
+        this.turno = 1;
+        this.puntaje = 0;
     }
 
     public String getANSI_RESET() {
@@ -44,32 +47,36 @@ public abstract class Juego {
 
     public Jugador getJugador() {
         return jugador;
-    }    
-    
-    public abstract boolean jugar();
-        
-    //TODO:Falta testear
-    public String siguienteColor(){
-        String color = "";
-        switch(this.turno%4){
-            case 0:
-                color = "R";
-            break;
-            case 1:
-                color = "A";
-            break;
-            case 2:
-                color = "V";
-            break;
-            case 3:
-                color = "M";
-            break;
-            default:
-            break;
-        }
-        this.turno++;        
-        return color;
     }
+
+    public int getTurno() {
+        return turno;
+    }
+
+    public int getPuntaje() {
+        return puntaje;
+    }
+    
+    public abstract void jugar();
+    /*
+    public abstract int getPuntaje();
+    */  
+    public abstract void crearTablero();
+    
+    public abstract int validarJugada(String argsStr);
+    
+    public abstract boolean validarArgumentosJugada(String argsStr);
+    
+    public abstract boolean finJuego(String args);
+    
+    public String colorSiguiente(){
+        return getColorPorTurno(this.turno + 1);
+    }
+    
+    public String colorAnterior(){
+        return getColorPorTurno(this.turno - 1);
+    }
+    
     public String setColor(String color){
         String hashtagConColor = "";
         switch(color){
@@ -89,5 +96,40 @@ public abstract class Juego {
             break;
         }
         return hashtagConColor;
+    }
+    
+    public String getColorJugadaActual(){        
+        return getColorPorTurno(this.turno);
+    }
+    
+    public String getColorPorTurno(int turno){
+        String color = "";
+            switch(turno%4){
+            case 1:
+                color = "R";
+            break;
+            case 2:
+                color = "A";
+            break;
+            case 3:
+                color = "V";
+            break;
+            case 0:
+                color = "M";
+            break;
+            default:
+                color = "R";
+            break;
+        }
+        return color;
+    }
+    
+    public void siguienteTurno(){
+        this.turno++;
+    }
+    
+    //Comprueba si una posición en una matriz es una ficha    
+    public boolean validarEsFicha(String[][] matriz,int x,int y){
+        return (matriz[x][y] != null) && (matriz[x][y].contains("R") || matriz[x][y].contains("V") || matriz[x][y].contains("A") || matriz[x][y].contains("M"));
     }
 }
