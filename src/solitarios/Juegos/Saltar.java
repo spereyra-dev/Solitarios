@@ -20,11 +20,13 @@ public class Saltar extends Juego {
     }
 
     public String[][] getMatrizJuego() {
-        String[][] s = this.matrizJuego;
+        String[][] s = new String[11][4];
         for (int i = 0; i < s.length; i++) {
             for (int j = 0; j < s[i].length; j++) {
-                if (!s[i][j].equals(' ')) {
-                    s[i][j] = this.setColor(s[i][j]);
+                if (validarEsFicha(this.matrizJuego, i, j)) {
+                    s[i][j] = this.setColor(this.matrizJuego[i][j]);
+                } else {
+                    s[i][j] = this.matrizJuego[i][j];
                 }
             }
         }
@@ -126,7 +128,6 @@ public class Saltar extends Juego {
             System.out.println("Fin del juego");
             //TODO llamar a puntaje.
         }
-
         int fichasASaltar = fichasEnMismaFila(matrizJuego, posicionX);
         String fichaActual = matrizJuego[posicionX][posicionY];
         int posXPrimerFicha = primeraFicha(matrizJuego)[0];
@@ -138,14 +139,6 @@ public class Saltar extends Juego {
                 matrizJuego[posicionX][posicionY] = " ";
                 matrizJuego[posicionX - fichasASaltar][posicionY] = fichaActual;
             }
-        }
-        switch (posicionX) {
-            case 0 -> puntaje += 60;
-            case 1 -> puntaje += 40;
-            case 2 -> puntaje += 30;
-            case 3 -> puntaje += 20;
-            case 4 -> puntaje += 10;
-            default -> puntaje += 0;
         }
         puntosMap.put(fichaActual, puntaje);
         //TODO Agregar zona de puntaje a partir de la fila 0 a 4

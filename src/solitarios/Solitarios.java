@@ -150,52 +150,9 @@ public class Solitarios {
         //TODO: Solicitar jugada
         Juego juegoS = ((Saltar)sistema.getJuego());
         String [][] matrizJuego = ((Saltar)sistema.getJuego()).getMatrizJuego();
+        dibujarTablero(sistema);
 
-        System.out.println("*******  SALTAR  *********");
-        for (int i = 0; i < matrizJuego.length; i++) {
-            System.out.println("    +-+-+-+-+");
-            switch (i) {
-                case 0:
-                    System.out.print("60  ");
-                    break;
-                case 1:
-                    System.out.print("40  ");
-                    break;
-                case 2:
-                    System.out.print("30  ");
-                    break;
-                case 3:
-                    System.out.print("20  ");
-                    break;
-                case 4:
-                    System.out.print("10  ");
-                    break;
-                default:
-                    System.out.print("    ");
-                    break;
-            }
-            for (int j = 0; j < matrizJuego[i].length; j++) {
-
-                System.out.print("|");
-                //#
-                String letra = Objects.equals(matrizJuego[i][j], "") ? matrizJuego[i][j] = " " : matrizJuego[i][j];
-                System.out.print(letra);
-
-                if (j == matrizJuego[i].length - 1) {
-                    System.out.print("|");
-                }
-            }
-            if (i == matrizJuego.length - 1) {
-                System.out.println();
-                System.out.println("    +-+-+-+-+");
-                System.out.print("     1 2 3 4");
-            }
-            System.out.println();
-        }
-
-        System.out.println("Inicia el juego, el primer color en mover será "+juegoS.siguienteColor());
-
-        System.out.println("*******  SALTAR  *********");
+        System.out.println("Inicia el juego, el primer color en mover será "+juegoS.colorSiguiente());
     } 
     private static void jugarRectangulo(Sistema sistema) {
         Scanner in = new Scanner(System.in);
@@ -336,7 +293,8 @@ public class Solitarios {
 
                     System.out.print("|");
                     //#
-                    System.out.print(matrizJuego[i][j]);
+                    String letra = Objects.equals(matrizJuego[i][j], "") ? matrizJuego[i][j] = " " : matrizJuego[i][j];
+                    System.out.print(letra);
 
                     if (j == matrizJuego[i].length - 1) {
                         System.out.print("|");
