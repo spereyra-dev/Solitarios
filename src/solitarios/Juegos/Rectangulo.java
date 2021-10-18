@@ -205,7 +205,7 @@ public class Rectangulo extends Juego {
         boolean esValido = true;
         for (int i = 0; i < this.matrizJuego.length && esValido; i++) {
             for (int j = 0; j < this.matrizJuego[0].length && esValido; j++) {
-                if(validarEsFicha(this.matrizJuego, i, j) && validarEsFicha(this.rectanguloJugada, j, j)){
+                if(validarEsFicha(this.matrizJuego, i, j) && validarEsFicha(this.rectanguloJugada, i, j)){
                     esValido = false;
                 }
             }
@@ -256,11 +256,30 @@ public class Rectangulo extends Juego {
         boolean esValidoPorCantidadRectangulos = (this.cantidadRectangulos < 10);
         for (int i = 0; i < matrizJuego.length; i++) {
             for (int j = 0; j < matrizJuego[0].length; j++) {
-                if(!validarEsFicha(matrizJuego, j, j)){
+                if(!validarEsFicha(matrizJuego, i, j)){
                     esValidoPorEspacio = true;
                 }
             }
         }
         return esValidoPorEspacio && esValidoPorCantidadRectangulos;
+    }
+
+    @Override
+    public int setPuntaje() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public int getPuntaje() {
+        int puntaje = 0;
+        for (int i = 0; i < this.matrizJuego.length; i++) {
+            for (int j = 0; j < this.matrizJuego[0].length; j++) {
+                if(validarEsFicha(matrizJuego, i, j)){
+                    puntaje++;
+                }
+            }
+            
+        }
+        return puntaje;
     }
 }

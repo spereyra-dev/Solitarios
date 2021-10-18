@@ -39,5 +39,5 @@ public class Jugador {
     @Override
     public boolean equals(Object obj) {
         return this.getAlias().equals((String)obj);
-    }
+    }    
 }

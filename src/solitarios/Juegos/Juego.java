@@ -12,13 +12,11 @@ public abstract class Juego {
     private int configuracion;
     private Jugador jugador;
     private int turno;
-    private int puntaje;
 
     public Juego(int configuracion, Jugador jugador) {
         this.configuracion = configuracion;
         this.jugador = jugador;
         this.turno = 1;
-        this.puntaje = 0;
     }
 
     public String getANSI_RESET() {
@@ -52,15 +50,13 @@ public abstract class Juego {
     public int getTurno() {
         return turno;
     }
-
-    public int getPuntaje() {
-        return puntaje;
-    }
     
     public abstract void jugar();
-    /*
+    
+    public abstract int setPuntaje();
+    
     public abstract int getPuntaje();
-    */  
+    
     public abstract void crearTablero();
     
     public abstract int validarJugada(String argsStr);
