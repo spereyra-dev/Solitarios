@@ -1,5 +1,9 @@
 package solitarios;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Collections;
+import java.util.Date;
 import sistema.Jugador;
 import sistema.Sistema;
 import solitarios.Juegos.Juego;
@@ -8,6 +12,10 @@ import solitarios.Juegos.Saltar;
 import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
+import sistema.Bitacora;
+import sistema.CriterioAlias;
+import sistema.CriterioPuntaje;
+import sistema.Partida;
 
 public class Solitarios {  
     
@@ -21,10 +29,15 @@ public class Solitarios {
         Jugador j2 = new Jugador("Santiago","San",21);
         sistema.registrarJugador(j1);
         sistema.registrarJugador(j2);
+        sistema.getBitacora().agregarPartida(new Partida(new Date(),j1, 10));
+        sistema.getBitacora().agregarPartida(new Partida(new Date(),j2, 10));
+        sistema.getBitacora().agregarPartida(new Partida(new Date(),j2, 5000));
+        sistema.getBitacora().agregarPartida(new Partida(new Date(),j1, 1));
+        sistema.getBitacora().agregarPartida(new Partida(new Date(),j1, 50));
         sistema.elegirJuego(3,2,j1);
 
         /*
-        END REGION TEST:        
+        END REGION TEST:
         */
         
         Scanner in = new Scanner(System.in);
@@ -59,9 +72,7 @@ public class Solitarios {
                 break;
                 case 4:
                     clearScreen();              
-                    System.out.println("*******BITÁCORA*********");
-                    System.out.println("*******EN CONSTRUCCION*********");
-                    System.out.println("*******BITÁCORA*********");
+                    bitacora(sistema);
                 break;
                 case 5:
                     clearScreen();
@@ -80,6 +91,38 @@ public class Solitarios {
         System.out.println("4-Bitácora");
         System.out.println("5-Fin");
         System.out.println("*******MENU*********");
+    }
+    public static void bitacora(Sistema sistema){
+        Scanner in = new Scanner(System.in);
+        String input = "A";
+        Bitacora bitacora = sistema.getBitacora();
+        DateFormat formatoFecha = new SimpleDateFormat("yyyy/mm/dd");
+        while(!input.equalsIgnoreCase("X")){
+            clearScreen();
+            
+            if(input.equalsIgnoreCase("A") || input.equalsIgnoreCase("X")){
+                Collections.sort(bitacora.getPartidas(), new CriterioAlias());   
+            } else if (input.equalsIgnoreCase("P") || input.equalsIgnoreCase("X")){
+                Collections.sort(bitacora.getPartidas(), new CriterioPuntaje());
+            } else {
+                System.out.println("Debe elegir una de las opciones anteriores.");
+            }
+            System.out.println("*******BITÁCORA*********");
+            if(bitacora.getPartidas().size() > 0){
+                for (Partida partida : bitacora.getPartidas()){
+                    System.out.print("Fecha: " + formatoFecha.format(partida.getComienzo()) + " | " );
+                    System.out.print("Jugador: " + partida.getJugador().getNombre() + "[" + partida.getJugador().getAlias() + "]"  +  " (" + partida.getJugador().getEdad() + ")" + " | " ); 
+                    System.out.println("Puntaje: " + partida.getPuntaje());
+                }
+                System.out.println("A - Ordenar por alias ASC");
+                System.out.println("P - Ordenar por puntaje DESC");
+            } else {
+                System.out.println("La bitacora está vacía. Debe jugar algún juego para registrarlo.");
+            }
+            System.out.println("X - Salir");
+            System.out.println("*******BITÁCORA*********");
+            input = in.nextLine();
+        }
     }
     public static void registrar(Sistema sistema) {
         clearScreen();
@@ -191,39 +234,46 @@ public class Solitarios {
         Scanner in = new Scanner(System.in);
         String args = "";
         Juego juego = (Rectangulo)sistema.getJuego();
-        while(!juego.finJuego(args)){
+        while(!sistema.finJuego(args)){
             int validarJugada = -1;
-            while(validarJugada != 0){
+            while(validarJugada != 0 && !juego.finJuego(args)){
                 clearScreen();
                 dibujarTablero(sistema);
                 System.out.println("Ingrese Jugada:");
                 args = in.nextLine();
-                if(juego.validarArgumentosJugada(args)){
-                    validarJugada = juego.validarJugada(args);
-                    if(validarJugada == 1){
-                        System.out.println("El rectángulo elegido pisa algún tope.");
+                if(!juego.finJuego(args)){
+                    if(juego.validarArgumentosJugada(args)){
+                        validarJugada = juego.validarJugada(args);
+                        if(validarJugada == 1){
+                            System.out.println("El rectángulo elegido pisa algún tope.");
+                            in.nextLine();
+                        }
+                        if(validarJugada == 2){
+                            System.out.println("El rectángulo elegido pisa algún otro rectángulo.");
+                            in.nextLine();
+                        }
+                        if(validarJugada == 3){
+                            sistema.getJuego().colorAnterior();
+                            System.out.println("El rectángulo elegido no es adyacente al anterior. (Jugada anterior color: " + sistema.getJuego().colorAnterior() + ")");
+                            in.nextLine();
+                        }
+                    } else {
+                        System.out.println("La jugada debe ser 4 números del 1-20.");
+                        System.out.println("El primero indíca la posición \"x\" de inicio.");
+                        System.out.println("El segundo indíca la posición \"y\" de inicio. ");
+                        System.out.println("El tercero indíca la cantidad de filas.");
+                        System.out.println("El cuarto indíca la cantidad de columnas.");
+                        System.out.println("La suma de la \"x\" y las filas o la \"y\" y las columnas no debe superar el máximo del tablero.");
                         in.nextLine();
                     }
-                    if(validarJugada == 2){
-                        System.out.println("El rectángulo elegido pisa algún otro rectángulo.");
-                        in.nextLine();
-                    }
-                    if(validarJugada == 3){
-                        sistema.getJuego().colorAnterior();
-                        System.out.println("El rectángulo elegido no es adyacente al anterior. (Jugada anterior color: " + sistema.getJuego().colorAnterior() + ")");
-                        in.nextLine();
-                    }
-                } else {
-                    System.out.println("La jugada debe ser 4 números del 1-20.");
-                    System.out.println("El primero indíca la posición \"x\" de inicio.");
-                    System.out.println("El segundo indíca la posición \"y\" de inicio. ");
-                    System.out.println("El tercero indíca la cantidad de filas.");
-                    System.out.println("El cuarto indíca la cantidad de columnas.");
-                    System.out.println("La suma de la \"x\" y las filas o la \"y\" y las columnas no debe superar el máximo del tablero.");
-                    in.nextLine();
                 }
             }
         }
+        
+        System.out.println("");
+        System.out.println("El juego terminó. Tu puntaje fue: " + sistema.getPartida().getPuntaje());
+        System.out.println("Presione cualquier tecla para continuar.. ");
+        in.nextLine();
     }
     
     private static Jugador elegirJugador(Sistema sistema){
@@ -350,10 +400,10 @@ public class Solitarios {
             System.out.println("     1 2 3 4 5 6 7 8 9 1 1 1 1 1 1 1 1 1 1 2");
             System.out.println("                       0 1 2 3 4 5 6 7 8 9 0");
             for (int i = 0; i < matrizJuego.length; i++) {
-                if(i<10){
-                    System.out.print("0" + i + "  ");
+                if(i<9){
+                    System.out.print("0" + (i+1) + "  ");
                 }else{
-                    System.out.print(i + "  ");
+                    System.out.print((i+1) + "  ");
                 }
 
                 for (int j = 0; j < matrizJuego[0].length; j++) {

@@ -1,6 +1,7 @@
 package sistema;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import solitarios.Juegos.Juego;
 import solitarios.Juegos.Rectangulo;
@@ -15,7 +16,7 @@ public class Sistema {
     private List<Jugador> jugadores;
     private Bitacora bitacora;
     private Juego juego;
-    
+    private Partida partida;
     
     public Sistema() {
         this.jugadores = new ArrayList<>();
@@ -36,6 +37,10 @@ public class Sistema {
 
     public Juego getJuego() {
         return juego;
+    }
+
+    public Partida getPartida() {
+        return partida;
     }
     
     
@@ -74,5 +79,14 @@ public class Sistema {
             default:
             break;
         }
-    }    
+        this.partida = new Partida(new Date(),jugador, 0);
+    }  
+    public boolean finJuego(String args){
+        boolean esElFin = this.getJuego().finJuego(args);
+        if(esElFin){
+            this.partida.setPuntaje(this.juego.getPuntaje());
+            this.bitacora.agregarPartida(this.partida);
+        }
+        return esElFin;
+    }
 }
