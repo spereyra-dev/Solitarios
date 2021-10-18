@@ -147,12 +147,45 @@ public class Solitarios {
     }
 
     private static void jugarSaltar(Sistema sistema) {
-        //TODO: Solicitar jugada
-        Juego juegoS = ((Saltar)sistema.getJuego());
-        String [][] matrizJuego = ((Saltar)sistema.getJuego()).getMatrizJuego();
-        dibujarTablero(sistema);
+        Scanner in = new Scanner(System.in);
+        String args = "";
+        Juego juego = ((Saltar)sistema.getJuego());
+        while(!juego.finJuego(args)){
+            int validarJugada = -1;
+            while(validarJugada != 0){
+                clearScreen();
+                dibujarTablero(sistema);
+                System.out.println("Puede mover las fichas de las siguientes columnas: ");
+                for (int i = 0; i < ((Saltar)sistema.getJuego()).fichasColor(juego.getColorJugadaActual()).size(); i++) {
+                    System.out.println("Fila: "+((Saltar)sistema.getJuego()).fichasColor(juego.getColorJugadaActual()).get(i).x+", Columna: "+(((Saltar)sistema.getJuego()).fichasColor(juego.getColorJugadaActual()).get(i).y+1));
+                }
+                System.out.println();
+                System.out.println("Elija columna a mover");
+                args = in.nextLine();
+                if(juego.validarArgumentosJugada(args)){
+                    validarJugada = juego.validarJugada(args);
+                    if(validarJugada == 1){
+                        System.out.println("La posición de destino debe estar vacía.");
+                        in.nextLine();
+                    }
+                    if(validarJugada == 2){
+                        System.out.println("En el área de base, no puede haber dos fichas del mismo color en la misma fila.");
+                        in.nextLine();
+                    }
+                    if(validarJugada == 3){
+                        sistema.getJuego().colorAnterior();
+                        System.out.println("La ficha más adelantada del color considerado en el tablero no puede avanzar solamente una posición");
+                        in.nextLine();
+                    }
+                } else {
+                    System.out.println("La jugada debe ingresar un número");
+                    System.out.println("El mismo indica la columna desde la cual se realizará el salto.");
+                    System.out.println("No se debe ingresar un número que supere el máximo de columnas del tablero.");
+                    in.nextLine();
+                }
+            }
+        }
 
-        System.out.println("Inicia el juego, el primer color en mover será "+juegoS.colorSiguiente());
     } 
     private static void jugarRectangulo(Sistema sistema) {
         Scanner in = new Scanner(System.in);
@@ -308,6 +341,7 @@ public class Solitarios {
                 System.out.println();
             }
 
+            System.out.println("Juega " + sistema.getJuego().getColorJugadaActual());
             System.out.println("*******  SALTAR  *********");
 
         } else if (sistema.getJuego().getClass() == Rectangulo.class){
