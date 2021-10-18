@@ -96,7 +96,7 @@ public class Solitarios {
         Scanner in = new Scanner(System.in);
         String input = "A";
         Bitacora bitacora = sistema.getBitacora();
-        DateFormat formatoFecha = new SimpleDateFormat("yyyy/mm/dd");
+        DateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         while(!input.equalsIgnoreCase("X")){
             clearScreen();
             

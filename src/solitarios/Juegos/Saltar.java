@@ -169,16 +169,27 @@ public class Saltar extends Juego {
         int puntaje = 0;
         for (int i = 0; i < this.matrizJuego.length; i++) {
             for (int j = 0; j < this.matrizJuego[0].length; j++) {
-                if(validarEsFicha(matrizJuego, i, j)){
+                if (validarEsFicha(matrizJuego, i, j)) {
                     switch (i) {
-                        case 0 -> puntaje += 60;
-                        case 1 -> puntaje += 40;
-                        case 2 -> puntaje += 30;
-                        case 3 -> puntaje += 20;
-                        case 4 -> puntaje += 10;
-                        default -> {
-                        }
+                        case 0:
+                            puntaje += 60;
+                            break;
+                        case 1:
+                            puntaje += 40;
+                            break;
+                        case 2:
+                            puntaje += 30;
+                            break;
+                        case 3:
+                            puntaje += 20;
+                            break;
+                        case 4:
+                            puntaje += 10;
+                            break;
+                        default:
+                            break;
                     }
+
                 }
             }
         }
