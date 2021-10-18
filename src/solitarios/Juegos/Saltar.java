@@ -1,3 +1,6 @@
+//Santiago Pereyra 245198
+//Venancio Portillo 276560
+
 package solitarios.Juegos;
 
 import sistema.Jugador;
@@ -154,9 +157,6 @@ public class Saltar extends Juego {
         this.matrizAnterior = matrizJuego;
     }
 
-    /*
-        Devuelve verdadero si el juego no terminó
-    */
     @Override
     public void jugar() {
         this.setMatrizAnterior();
@@ -419,4 +419,13 @@ public class Saltar extends Juego {
         num[ranNum] = temp;
         return num[3 - time];
     }
+    /*public boolean validarHayColumnasValidas(){
+        boolean esValido = false;
+        for (int i = 1; i <= 4; i++) {
+            if(validarJugada(Integer.toString(i)) == 0){
+                esValido = true;
+            }
+        }
+        return esValido;
+    }*/
 }

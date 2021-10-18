@@ -1,9 +1,9 @@
+//Santiago Pereyra 245198
+//Venancio Portillo 276560
+
 package sistema;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
 
 public class Bitacora {
     private ArrayList<Partida> partidas;

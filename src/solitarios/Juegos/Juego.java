@@ -1,6 +1,8 @@
+//Santiago Pereyra 245198
+//Venancio Portillo 276560
+
 package solitarios.Juegos;
 
-import java.util.HashMap;
 import sistema.Jugador;
 
 public abstract class Juego {

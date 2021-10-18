@@ -1,3 +1,6 @@
+//Santiago Pereyra 245198
+//Venancio Portillo 276560
+
 package solitarios;
 
 import java.text.DateFormat;
@@ -111,7 +114,12 @@ public class Solitarios {
             if(bitacora.getPartidas().size() > 0){
                 for (Partida partida : bitacora.getPartidas()){
                     System.out.print("Fecha: " + formatoFecha.format(partida.getComienzo()) + " | " );
-                    System.out.print("Jugador: " + partida.getJugador().getNombre() + "[" + partida.getJugador().getAlias() + "]"  +  " (" + partida.getJugador().getEdad() + ")" + " | " ); 
+                    System.out.print("Jugador: " + partida.getJugador().getNombre() + "[" + partida.getJugador().getAlias() + "]"  +  " (" + partida.getJugador().getEdad() + ")" + " | " );
+                    if(sistema.getJuego().getClass() == Saltar.class){
+                        System.out.println("Juego: Saltar | ");
+                    }else{
+                        System.out.println("Juego: Rectángulo | ");                        
+                    }
                     System.out.println("Puntaje: " + partida.getPuntaje());
                 }
                 System.out.println("A - Ordenar por alias ASC");
@@ -193,9 +201,9 @@ public class Solitarios {
         Scanner in = new Scanner(System.in);
         String args = "";
         Juego juego = ((Saltar)sistema.getJuego());
-        while(!juego.finJuego(args)){
+        while(!sistema.finJuego(args)){
             int validarJugada = -1;
-            while(validarJugada != 0){
+            while(validarJugada != 0 && !juego.finJuego(args)){
                 clearScreen();
                 dibujarTablero(sistema);
                 System.out.println("Puede mover las fichas de las siguientes columnas: ");
@@ -205,38 +213,43 @@ public class Solitarios {
                 System.out.println();
                 System.out.println("Elija columna a mover");
                 args = in.nextLine();
-                if(juego.validarArgumentosJugada(args)){
-                    validarJugada = juego.validarJugada(args);
-                    if(validarJugada == 1){
-                        System.out.println("La posición de destino debe estar vacía.");
+                if(!juego.finJuego(args)){
+                    if(juego.validarArgumentosJugada(args)){
+                        validarJugada = juego.validarJugada(args);
+                        if(validarJugada == 1){
+                            System.out.println("La posición de destino debe estar vacía.");
+                            System.out.println();
+                            System.out.println("Presione cualquier tecla para continuar");
+                            in.nextLine();
+                        }
+                        if(validarJugada == 2){
+                            System.out.println("En el área de base, no puede haber dos fichas del mismo color en la misma fila.");
+                            System.out.println();
+                            System.out.println("Presione cualquier tecla para continuar");
+                            in.nextLine();
+                        }
+                        if(validarJugada == 3){
+                            sistema.getJuego().colorAnterior();
+                            System.out.println("La ficha más adelantada del color considerado en el tablero no puede avanzar solamente una posición");
+                            System.out.println();
+                            System.out.println("Presione cualquier tecla para continuar");
+                            in.nextLine();
+                        }
+                    } else {
+                        System.out.println("La jugada debe ingresar un número");
+                        System.out.println("El mismo indica la columna desde la cual se realizará el salto.");
+                        System.out.println("No se debe ingresar un número que supere el máximo de columnas del tablero.");
                         System.out.println();
                         System.out.println("Presione cualquier tecla para continuar");
                         in.nextLine();
                     }
-                    if(validarJugada == 2){
-                        System.out.println("En el área de base, no puede haber dos fichas del mismo color en la misma fila.");
-                        System.out.println();
-                        System.out.println("Presione cualquier tecla para continuar");
-                        in.nextLine();
-                    }
-                    if(validarJugada == 3){
-                        sistema.getJuego().colorAnterior();
-                        System.out.println("La ficha más adelantada del color considerado en el tablero no puede avanzar solamente una posición");
-                        System.out.println();
-                        System.out.println("Presione cualquier tecla para continuar");
-                        in.nextLine();
-                    }
-                } else {
-                    System.out.println("La jugada debe ingresar un número");
-                    System.out.println("El mismo indica la columna desde la cual se realizará el salto.");
-                    System.out.println("No se debe ingresar un número que supere el máximo de columnas del tablero.");
-                    System.out.println();
-                    System.out.println("Presione cualquier tecla para continuar");
-                    in.nextLine();
                 }
             }
         }
-
+        System.out.println("");
+        System.out.println("El juego terminó. Tu puntaje fue: " + sistema.getPartida().getPuntaje());
+        System.out.println("Presione cualquier tecla para continuar.. ");
+        in.nextLine();
     } 
     private static void jugarRectangulo(Sistema sistema) {
         Scanner in = new Scanner(System.in);

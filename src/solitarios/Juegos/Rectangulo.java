@@ -1,3 +1,6 @@
+//Santiago Pereyra 245198
+//Venancio Portillo 276560
+
 package solitarios.Juegos;
 
 import java.awt.Point;
