@@ -7,15 +7,10 @@ import java.util.*;
 import java.util.List;
 
 public class Saltar extends Juego {
-    //TODO:Validar reglas de fin de juego
-    //TODO:Validar jugada
-
     private String[][] matrizJuego;
     private String[][] matrizJugada;
     private String[][] matrizAnterior;
 
-    //primeras 6 filas sin puntuacion
-    //misma fila no puede haber colores iguales en el area base (primeras 6 filas)
     public Saltar(int configuracion, Jugador jugador) {
         super(configuracion, jugador);
         crearTablero();
@@ -36,64 +31,46 @@ public class Saltar extends Juego {
     }
 
     private void setMatrizJuego() {
-        for (int i = 0; i < this.matrizJugada.length; i++) {
-            for (int j = 0; j < this.matrizJugada[0].length; j++) {
-                if (validarEsFicha(this.matrizJugada, i, j)) {
-                    this.matrizJuego[i][j] = this.getColorJugadaActual();
-                }
-            }
-
-        }
+        this.matrizJuego = matrizJugada;
     }
 
-    //TODO falta hacer esto.
-    private void setMatrizJugada(int x) {
-        String[][] s = new String[11][4];
+    private void setMatrizJugada(int columna) {
+        String[][] s = matrizJuego;
+        int fichasASaltar = 0;
+        int fila = 0;
+        for (Point coordenadas : posicionFichaColorPorColumna(s, columna)) {
+            if (coordenadas.y == columna) {
+                fichasASaltar = fichasEnMismaFila(s, coordenadas.x);
+                fila = coordenadas.x;
+            }
+        }
         for (int i = 0; i < s.length; i++) {
             for (int j = 0; j < s[i].length; j++) {
-                if (i == x) {
-                    s[i][j] = getColorJugadaActual();
+                if (i == fila && j == columna) {
+                    s[i][j] = " ";
+                    if (i - fichasASaltar < 0) {
+                        s[0][j] = getColorJugadaActual();
+                    } else {
+                        s[i - fichasASaltar][j] = getColorJugadaActual();
+                    }
                 }
             }
         }
         this.matrizJugada = s;
     }
 
-    //Al final no las supe usar, quedaban en bucle.
-    private boolean validarFichaPorColumna(String[][] matrizJuego, String colorFicha) {
-        boolean esValido = false;
-        List<String> colors = new ArrayList<>();
-        for (int i = 0; i < matrizJuego[0].length; i++) {
-            for (int j = 0; j < matrizJuego.length; j++) {
-                if (j >= 7) {
-                    if (!Objects.equals(matrizJuego[j][i], colorFicha)) {
-                        esValido = true;
-                    }
-                }
-            }
-        }
-        return esValido;
-    }
-
-    //Al final no las supe usar, quedaban en bucle.
-    private boolean validarFichaPorFila(String[][] matrizJuego, String colorFicha) {
-        boolean esValido = false;
-        List<String> colors = new ArrayList<>();
-        for (int i = 0; i < matrizJuego.length; i++) {
-            for (int j = 0; j < matrizJuego[i].length; j++) {
-                if (i >= 7) {
-                    if (!Objects.equals(matrizJuego[i][j], colorFicha)) {
-                        esValido = true;
-                    }
-                }
-            }
-        }
-        return esValido;
+    private String alphabet(int numero) {
+        List<String> alphabet = new ArrayList<>();
+        alphabet.add("R");
+        alphabet.add("A");
+        alphabet.add("V");
+        alphabet.add("M");
+        return alphabet.get(numero);
     }
 
     public void crearTablero() {
-        //TODO hay que verificar que no haya colores repetidos en la columna
         String[][] s = new String[11][4];
+        int[][] aleatorio = matrizAleatoria();
         String[] defaultColorArray = new String[]{"R", "A", "V", "M", "A", "R", "M", "V", "V", "M", "A", "R", "M", "V", "R", "A"};
         List<String> colors = new ArrayList<>();
         Random random = new Random();
@@ -113,10 +90,7 @@ public class Saltar extends Juego {
                             colorAx++;
                         }
                     } else {
-                        String colorFicha = alphabet.get(random.nextInt(n));
-                        colors.add(colorFicha);
-                        alphabet.remove(colorFicha);
-                        s[i][j] = colors.get(j);
+                        s[i][j] = alphabet((aleatorio[i - 7][j]) - 1);
                     }
                 } else {
                     s[i][j] = " ";
@@ -169,36 +143,15 @@ public class Saltar extends Juego {
         for (int i = 0; i < matrizJuego.length; i++) {
             for (int j = 0; j < matrizJuego[i].length; j++) {
                 if (Objects.equals(matrizJuego[i][j], color)) {
-                    coordenadas.add(new Point(i,j));
+                    coordenadas.add(new Point(i, j));
                 }
             }
         }
         return coordenadas;
     }
 
-    //TODO: Habría que sacarlo a la mierda, no sirve para nada, lo estaba usando para hacer los metodos de validaciones.
-    public void saltar(int posicionX, int posicionY) {
-        Map<String, Integer> puntosMap = new HashMap<String, Integer>();
-        String[][] matrizJuego = this.matrizJuego;
-        int puntaje = 0;
-        int fichasASaltar = fichasEnMismaFila(matrizJuego, posicionX);
-        String fichaActual = matrizJuego[posicionX][posicionY];
-        int posXPrimerFicha = primeraFicha(matrizJuego)[0];
-        int posYPrimerFicha = primeraFicha(matrizJuego)[1];
-        if (posicionX - fichasASaltar >= 0 && !Objects.equals(matrizJuego[posicionX - fichasASaltar][posicionY], " ")) {
-            if (fichasASaltar == 1 && (posicionX == posXPrimerFicha && posicionY == posYPrimerFicha)) {
-                System.out.println("No puede saltar hasta haber otra ficha en la misma fila");
-            } else {
-                matrizJuego[posicionX][posicionY] = " ";
-                matrizJuego[posicionX - fichasASaltar][posicionY] = fichaActual;
-            }
-        }
-        puntosMap.put(fichaActual, puntaje);
-        //TODO Agregar zona de puntaje a partir de la fila 0 a 4
-    }
-
     private void setMatrizAnterior() {
-        this.matrizAnterior = matrizJugada;
+        this.matrizAnterior = matrizJuego;
     }
 
     /*
@@ -206,7 +159,6 @@ public class Saltar extends Juego {
     */
     @Override
     public void jugar() {
-        //TODO toh'
         this.setMatrizAnterior();
         this.setMatrizJuego();
         siguienteTurno();
@@ -214,8 +166,22 @@ public class Saltar extends Juego {
 
     //Reglas del puntaje
     public int getPuntaje() {
-        //TODO PUNTAJE
         int puntaje = 0;
+        for (int i = 0; i < this.matrizJuego.length; i++) {
+            for (int j = 0; j < this.matrizJuego[0].length; j++) {
+                if(validarEsFicha(matrizJuego, i, j)){
+                    switch (i) {
+                        case 0 -> puntaje += 60;
+                        case 1 -> puntaje += 40;
+                        case 2 -> puntaje += 30;
+                        case 3 -> puntaje += 20;
+                        case 4 -> puntaje += 10;
+                        default -> {
+                        }
+                    }
+                }
+            }
+        }
         return puntaje;
     }
 
@@ -226,43 +192,72 @@ public class Saltar extends Juego {
         return args.trim().equalsIgnoreCase("X") || (fichasAreaBase <= 2);
     }
 
+    public boolean validarNoEsPrimerFicha(int columna) {
+        boolean esValido = true;
+        String[][] s = matrizJuego;
+        int fichasASaltar = 0;
+        int fila = 0;
+        int posXPrimerFicha = primeraFicha(s)[0];
+        int posYPrimerFicha = primeraFicha(s)[1];
+        for (Point coordenadas : posicionFichaColorPorColumna(s, columna)) {
+            if (coordenadas.y == columna) {
+                fichasASaltar = fichasEnMismaFila(s, coordenadas.x);
+                fila = coordenadas.x;
+            }
+        }
+        for (int i = 0; i < s.length; i++) {
+            for (int j = 0; j < s[i].length; j++) {
+                if (i == fila && j == columna) {
+                    if (fichasASaltar == 1 && (i == posXPrimerFicha && j == posYPrimerFicha)) {
+                        esValido = false;
+                    }
+                }
+            }
+        }
+        return esValido;
+    }
+
     @Override
     public int validarJugada(String argsStr) {
         String[] args = argsStr.trim().split(" ");
         int esValido = 0;
         int columna = Integer.parseInt(args[0]) - 1;
-        setMatrizJugada(columna);
-        if (!validarPosicionDestinoVacia(columna)) { //TODO arreglar colores en la misma columna para poder validar esto.
+        if (!validarPosicionDestinoVacia(columna)) {
             esValido = 1;
         }
         if (!validarFichasMismoColorAreaBase() && esValido == 0) {
             esValido = 2;
         }
+        if (!validarNoEsPrimerFicha(columna) && esValido == 0) {
+            esValido = 3;
+        }
         if (esValido == 0) {
+            setMatrizJugada(columna);
             jugar();
         }
         return esValido;
     }
 
-
-    private ArrayList<Point> obtenerPosicionPorColumna(int columna){
+    public ArrayList<Point> posicionFichaColorPorColumna(String[][] matrizJuego, int posicion) {
         ArrayList<Point> coordenadas = new ArrayList<>();
-        for (int i = 0; i < matrizJuego[0].length; i++) {
-            for (int j = 0; j < matrizJuego.length; j++) {
-                if (j == columna && Objects.equals(matrizJuego[i][j], getColorJugadaActual())) {
-                    coordenadas.add(new Point(j,i));
-                }
+        for (int i = 0; i < matrizJuego.length; i++) {
+            if (!Objects.equals(matrizJuego[i][posicion], " ") && Objects.equals(getColorJugadaActual(), matrizJuego[i][posicion])) {
+                coordenadas.add(new Point(i, posicion));
             }
         }
         return coordenadas;
     }
+
     private boolean validarPosicionDestinoVacia(int columna) {
-        //TODO arreglar colores en la misma columna para poder validar esto.
-        //Pensaba crear un método que le pase por parametro la columna a mover, recorra la matriz y con el método validarEsFicha ver si está vació.
-        //Sin TESTEAR
-        boolean esValido;
-        int fichasASaltar = fichasEnMismaFila(this.matrizJuego, obtenerPosicionPorColumna(columna).get(0).x);
-        esValido = validarEsFicha(matrizJuego,obtenerPosicionPorColumna(columna).get(0).x-fichasASaltar,obtenerPosicionPorColumna(columna).get(0).y);
+        boolean esValido = true;
+        int nuevaCoordenada = 0;
+        for (Point coordenadas : posicionFichaColorPorColumna(this.matrizJuego, columna)) {
+            if (coordenadas.y == columna) {
+                int fichasASaltar = fichasEnMismaFila(this.matrizJuego, coordenadas.x);
+                nuevaCoordenada = (coordenadas.x - fichasASaltar) < 0 ? 0 : coordenadas.x - fichasASaltar;
+                esValido = !validarEsFicha(this.matrizJuego, nuevaCoordenada, coordenadas.y);
+            }
+        }
         return esValido;
     }
 
@@ -316,5 +311,101 @@ public class Saltar extends Juego {
     @Override
     public int setPuntaje() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    private int[][] n = new int[4][4];
+    private int[] num = {1, 2, 3, 4};
+
+    public int[][] matrizAleatoria() {
+        for (int i = 0; i < 4; i++) {
+            int time = 0;
+            for (int j = 0; j < 4; j++) {
+                n[i][j] = generateNum(time);
+                if (n[i][j] == 0) {
+                    if (j > 0) {
+                        j -= 2;
+                        continue;
+                    } else {
+                        i--;
+                        j = 3;
+                        continue;
+                    }
+                }
+                if (isCorrect(i, j)) {
+                    time = 0;
+                } else {
+                    time++;
+                    j--;
+                }
+            }
+        }
+        return n;
+    }
+
+    private boolean isCorrect(int row, int col) {
+        return (checkRow(row) & checkLine(col) & checkNine(row, col));
+    }
+
+    private boolean checkRow(int row) {
+        for (int j = 0; j < 3; j++) {
+            if (n[row][j] == 0) {
+                continue;
+            }
+            for (int k = j + 1; k < 4; k++) {
+                if (n[row][j] == n[row][k]) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    private boolean checkLine(int col) {
+        for (int j = 0; j < 3; j++) {
+            if (n[j][col] == 0) {
+                continue;
+            }
+            for (int k = j + 1; k < 4; k++) {
+                if (n[j][col] == n[k][col]) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    private boolean checkNine(int row, int col) {
+        int j = row / 4 * 4;
+        int k = col / 4 * 4;
+        for (int i = 0; i < 3; i++) {
+            if (n[j + i / 4][k + i % 4] == 0) {
+                continue;
+            }
+            for (int m = i + 1; m < 4; m++) {
+                if (n[j + i / 4][k + i % 4] == n[j + m / 4][k + m % 4]) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    private Random r = new Random();
+
+    private int generateNum(int time) {
+        if (time == 0) {
+            for (int i = 0; i < 4; i++) {
+                num[i] = i + 1;
+            }
+        }
+        if (time == 4) {
+            return 0;
+        }
+
+        int ranNum = r.nextInt(4 - time);
+        int temp = num[3 - time];
+        num[3 - time] = num[ranNum];
+        num[ranNum] = temp;
+        return num[3 - time];
     }
 }

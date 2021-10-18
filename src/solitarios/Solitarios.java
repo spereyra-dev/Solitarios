@@ -209,21 +209,29 @@ public class Solitarios {
                     validarJugada = juego.validarJugada(args);
                     if(validarJugada == 1){
                         System.out.println("La posición de destino debe estar vacía.");
+                        System.out.println();
+                        System.out.println("Presione cualquier tecla para continuar");
                         in.nextLine();
                     }
                     if(validarJugada == 2){
                         System.out.println("En el área de base, no puede haber dos fichas del mismo color en la misma fila.");
+                        System.out.println();
+                        System.out.println("Presione cualquier tecla para continuar");
                         in.nextLine();
                     }
                     if(validarJugada == 3){
                         sistema.getJuego().colorAnterior();
                         System.out.println("La ficha más adelantada del color considerado en el tablero no puede avanzar solamente una posición");
+                        System.out.println();
+                        System.out.println("Presione cualquier tecla para continuar");
                         in.nextLine();
                     }
                 } else {
                     System.out.println("La jugada debe ingresar un número");
                     System.out.println("El mismo indica la columna desde la cual se realizará el salto.");
                     System.out.println("No se debe ingresar un número que supere el máximo de columnas del tablero.");
+                    System.out.println();
+                    System.out.println("Presione cualquier tecla para continuar");
                     in.nextLine();
                 }
             }
